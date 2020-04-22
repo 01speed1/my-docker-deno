@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    env_file: .env
+    build: .
+    command: deno src/index.ts
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/vendorApi"
+    working_dir: /vendorApi
+    networks:
+      - vendor-network
+    links:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    networks:
+      - vendor-network
+
+networks:
+  vendor-network:
+    driver: bridge
